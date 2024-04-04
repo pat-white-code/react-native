@@ -33,3 +33,7 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# style settings
+.eslintrc.js
+.prettier.js
