@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import CurrentWeather from "./src/components/CurrentWeather";
+// import CurrentWeather from "./src/components/CurrentWeather";
+import UpcomingWeather from "./src/components/UpcomingWeather";
 
 const styles = StyleSheet.create({
   container: {
@@ -11,7 +12,7 @@ const styles = StyleSheet.create({
 const App = () => {
   return (
     <View style={styles.container}>
-      <CurrentWeather />
+      <UpcomingWeather />
     </View>
   );
 };
