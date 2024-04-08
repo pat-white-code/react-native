@@ -37,3 +37,4 @@ yarn-error.*
 # style settings
 .eslintrc.js
 .prettier.js
+config.js

@@ -11,8 +11,10 @@
     "prettier": "npx prettier . --write"
   },
   "dependencies": {
+    "@apollo/client": "^3.9.10",
     "expo": "~50.0.14",
     "expo-status-bar": "~1.11.1",
+    "graphql": "^15.8.0",
     "react": "18.2.0",
     "react-native": "0.73.6"
   },
