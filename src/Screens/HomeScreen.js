@@ -1,18 +1,66 @@
 import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
+import Post from '../components/Post'
+
+import { gql, useQuery } from "@apollo/client";
+
+const GET_POSTS = gql`
+    query Query {
+        posts {
+            id
+            body
+            comments {
+                body
+                createdAt
+                id
+                username
+            }
+            createdAt
+            likes {
+                createdAt
+                id
+                username
+            }
+            username
+        }
+    }
+`;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    }
-})
+        padding: 10
+    },
+});
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = () => {
+    const { data, errors, loading } = useQuery(GET_POSTS);
+
+    if (loading) {
+        return (
+            <View>
+                <Text>Loading...</Text>
+            </View>
+        );
+    }
+
+    if (errors) {
+        return (
+            <View>
+                <Text>Error</Text>
+            </View>
+        );
+    }
+
+    // console.log("data", data);
+
     return (
         <View style={styles.container}>
-            <Text>Home Screen</Text>
+            <FlatList
+                data={data.posts}
+                renderItem={post => <Post post={post} />}
+                keyExtractor={post => post.id}
+            />
         </View>
     );
 };
