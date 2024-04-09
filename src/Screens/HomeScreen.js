@@ -1,14 +1,18 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, StyleSheet } from "react-native";
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    }
+})
 
 const HomeScreen = ({ navigation }) => {
     return (
-        <View>
+        <View style={styles.container}>
             <Text>Home Screen</Text>
-            <Button
-                title="Create Post"
-                onPress={() => navigation.navigate('CreatePost')}
-            />
         </View>
     );
 };
