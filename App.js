@@ -4,8 +4,13 @@ import { View, StyleSheet } from "react-native";
 import UpcomingWeather from "./src/components/UpcomingWeather";
 import { AppRegistry } from "react-native";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { gql } from "@apollo/client";
 import config from "./config";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import CreatePostScreen from "./src/Screens/CreatePostScreen";
+import HomeScreen from "./src/Screens/HomeScreen";
+
+const Stack = createNativeStackNavigator();
 
 const client = new ApolloClient({
     uri: `http://${config.IP_ADDRESS}:4000/graphql`,
@@ -21,9 +26,20 @@ const styles = StyleSheet.create({
 const App = () => {
     return (
         <ApolloProvider client={client}>
-            <View style={styles.container}>
-                <UpcomingWeather />
-            </View>
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen
+                        name="Home"
+                        component={HomeScreen}
+                        options={{ title: "Home" }}
+                    />
+                    <Stack.Screen
+                        name="CreatePost"
+                        component={CreatePostScreen}
+                        options={{ title: "Create Post" }}
+                    />
+                </Stack.Navigator>
+            </NavigationContainer>
         </ApolloProvider>
     );
 };
