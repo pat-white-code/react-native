@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextInput, Button } from "react-native-paper";
 import { gql, useMutation } from "@apollo/client";
 import { StyleSheet, View } from "react-native";
+import { storeToken } from "../../util/auth";
 
 const LOGIN_USER = gql`
     mutation Mutation($loginInput: LoginInput) {
@@ -26,14 +27,39 @@ const styles = StyleSheet.create({
     },
 });
 
-const LoginScreen = () => {
-    const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER);
+const LoginScreen = ({ navigation }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    if (data) {
-        console.log("data", data);
-    }
+    const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER, {
+        update: (proxy, result) => {
+            console.log("result", result);
+            navigation.navigate('Home')
+        },
+        variables: {
+            loginInput: {
+                password,
+                username,
+            },
+        },
+    });
+
+    // if (data) {
+    //     await storeToken(data.login.token)
+    //     navigation.navigate(home)
+    // }
+
+    // useEffect(async () => {
+    //     if (data.login.token) {
+    //         debugger
+    //         await storeToken(data.login.token);
+    //         // navigation.navigate('Home')
+    //     }
+    // }, [data]);
+
+    // if (data) {
+    //     console.log("data", data);
+    // }
 
     if (error) {
         console.log("error", error);
@@ -59,16 +85,7 @@ const LoginScreen = () => {
                 style={styles.textInput}
                 disabled={loading}
                 mode="contained"
-                onPress={() => {
-                    loginUser({
-                        variables: {
-                            loginInput: {
-                                username,
-                                password,
-                            },
-                        },
-                    });
-                }}
+                onPress={() => loginUser()}
             >
                 Login
             </Button>
