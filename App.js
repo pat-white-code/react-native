@@ -11,7 +11,8 @@ import {
     PaperProvider,
 } from "react-native-paper";
 import { Appbar } from "react-native-paper";
-import { getHeaderTitle } from '@react-navigation/elements'
+import { getHeaderTitle } from "@react-navigation/elements";
+import LoginScreen from "./src/Screens/LoginScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,19 +21,22 @@ const client = new ApolloClient({
     cache: new InMemoryCache(),
 });
 
-
 const MyAppBar = ({ navigation, route, options, back }) => {
-  const title = getHeaderTitle(options, route.name)
-  return(
-    <Appbar.Header>
-        {back && <Appbar.BackAction onPress={navigation.goBack} />}
-        <Appbar.Content title={title} />
-        <Appbar.Action icon="plus" onPress={() => {
-          navigation.navigate('CreatePost')
-        }} />
-        <Appbar.Action icon="magnify" onPress={() => {}} />
-    </Appbar.Header>
-)};
+    const title = getHeaderTitle(options, route.name);
+    return (
+        <Appbar.Header>
+            {back && <Appbar.BackAction onPress={navigation.goBack} />}
+            <Appbar.Content title={title} />
+            <Appbar.Action
+                icon="plus"
+                onPress={() => {
+                    navigation.navigate("CreatePost");
+                }}
+            />
+            <Appbar.Action icon="magnify" onPress={() => {}} />
+        </Appbar.Header>
+    );
+};
 
 const App = () => {
     return (
@@ -40,10 +44,11 @@ const App = () => {
             <PaperProvider>
                 <NavigationContainer>
                     <Stack.Navigator
-                    screenOptions={{
-                      header: props => <MyAppBar {...props} />
-                    }}
+                        screenOptions={{
+                            header: (props) => <MyAppBar {...props} />,
+                        }}
                     >
+                        <Stack.Screen name="Login" component={LoginScreen} />
                         <Stack.Screen
                             name="Home"
                             component={HomeScreen}
