@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext} from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import Post from '../components/Post'
+import { AuthContext } from "../context/auth";
 
 import { gql, useQuery } from "@apollo/client";
 
@@ -34,6 +35,7 @@ const styles = StyleSheet.create({
 });
 
 const HomeScreen = () => {
+    const context = useContext(AuthContext)
     const { data, errors, loading } = useQuery(GET_POSTS);
 
     if (loading) {
@@ -52,10 +54,9 @@ const HomeScreen = () => {
         );
     }
 
-    // console.log("data", data);
-
     return (
         <View style={styles.container}>
+            <Text>Hello {context.user ? context.user.username : null}</Text>
             <FlatList
                 data={data.posts}
                 renderItem={post => <Post post={post} />}

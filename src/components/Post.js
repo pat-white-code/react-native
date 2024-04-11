@@ -14,7 +14,6 @@ const Post = ({ post }) => {
     const { body, username, createdAt } = post.item
     const formattedDate = moment(createdAt).fromNow()
 
-    console.log(post.item)
     return(
     <Card style={styles.container}>
         <Text>{username}</Text>

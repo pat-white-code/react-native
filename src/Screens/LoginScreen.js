@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { TextInput, Button } from "react-native-paper";
 import { gql, useMutation } from "@apollo/client";
 import { StyleSheet, View } from "react-native";
-import { storeToken } from "../../util/auth";
+// import { storeToken } from "../util/auth";
+import { AuthContext } from "../context/auth";
 
 const LOGIN_USER = gql`
     mutation Mutation($loginInput: LoginInput) {
@@ -20,28 +21,32 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 40,
-        paddingTop: 100,
+        paddingTop: 100
     },
     textInput: {
-        marginVertical: 5,
-    },
+        marginVertical: 5
+    }
 });
 
 const LoginScreen = ({ navigation }) => {
+    const context = useContext(AuthContext);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER, {
-        update: (proxy, result) => {
-            console.log("result", result);
-            navigation.navigate('Home')
+        update(_, result) {
+            debugger
+            const userData = result.data.login
+            console.log('userData', userData)
+            context.login(userData)
+            navigation.navigate("Home");
         },
         variables: {
             loginInput: {
                 password,
-                username,
-            },
-        },
+                username
+            }
+        }
     });
 
     // if (data) {

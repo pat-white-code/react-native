@@ -8,17 +8,18 @@ import CreatePostScreen from "./src/Screens/CreatePostScreen";
 import HomeScreen from "./src/Screens/HomeScreen";
 import {
     MD3LightTheme as DefaultTheme,
-    PaperProvider,
+    PaperProvider
 } from "react-native-paper";
 import { Appbar } from "react-native-paper";
 import { getHeaderTitle } from "@react-navigation/elements";
 import LoginScreen from "./src/Screens/LoginScreen";
+import { AuthProvider } from "./src/context/auth";
 
 const Stack = createNativeStackNavigator();
 
 const client = new ApolloClient({
     uri: `http://${config.IP_ADDRESS}:4000/graphql`,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache()
 });
 
 const MyAppBar = ({ navigation, route, options, back }) => {
@@ -40,29 +41,34 @@ const MyAppBar = ({ navigation, route, options, back }) => {
 
 const App = () => {
     return (
-        <ApolloProvider client={client}>
-            <PaperProvider>
-                <NavigationContainer>
-                    <Stack.Navigator
-                        screenOptions={{
-                            header: (props) => <MyAppBar {...props} />,
-                        }}
-                    >
-                        <Stack.Screen name="Login" component={LoginScreen} />
-                        <Stack.Screen
-                            name="Home"
-                            component={HomeScreen}
-                            // options={{ title: "Home" }}
-                        />
-                        <Stack.Screen
-                            name="CreatePost"
-                            component={CreatePostScreen}
-                            options={{ title: "Create Post" }}
-                        />
-                    </Stack.Navigator>
-                </NavigationContainer>
-            </PaperProvider>
-        </ApolloProvider>
+        <AuthProvider>
+            <ApolloProvider client={client}>
+                <PaperProvider>
+                    <NavigationContainer>
+                        <Stack.Navigator
+                            screenOptions={{
+                                header: (props) => <MyAppBar {...props} />
+                            }}
+                        >
+                            <Stack.Screen
+                                name="Login"
+                                component={LoginScreen}
+                            />
+                            <Stack.Screen
+                                name="Home"
+                                component={HomeScreen}
+                                // options={{ title: "Home" }}
+                            />
+                            <Stack.Screen
+                                name="CreatePost"
+                                component={CreatePostScreen}
+                                options={{ title: "Create Post" }}
+                            />
+                        </Stack.Navigator>
+                    </NavigationContainer>
+                </PaperProvider>
+            </ApolloProvider>
+        </AuthProvider>
     );
 };
 
