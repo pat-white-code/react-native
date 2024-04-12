@@ -35,10 +35,9 @@ const LoginScreen = ({ navigation }) => {
 
     const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER, {
         update(_, result) {
-            debugger
-            const userData = result.data.login
-            console.log('userData', userData)
-            context.login(userData)
+            const userData = result.data.login;
+            console.log("userData", userData);
+            context.login(userData);
             navigation.navigate("Home");
         },
         variables: {

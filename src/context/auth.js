@@ -1,10 +1,27 @@
 import React, { useReducer, createContext } from "react";
-const USER_LOGIN = 'USER_LOGIN'
-const USER_LOGOUT = 'USER_LOGOUT'
+const USER_LOGIN = "USER_LOGIN";
+const USER_LOGOUT = "USER_LOGOUT";
+import { getToken, storeToken, removeToken } from "../util/auth";
+import { jwtDecode } from "jwt-decode";
+
+const intitialState = {
+    user: null
+};
+
+const currentToken = getToken().then((token) => {
+    if (token) {
+        const decodedToken = jwtDecode(currentToken);
+        if (isTokenExpired(decodedToken)) {
+            removeToken();
+        } else {
+            intitialState.user = decodedToken;
+        }
+    }
+});
 
 export const AuthContext = createContext({
     user: null,
-    login: userData => {},
+    login: (userData) => {},
     logout: () => {}
 });
 
@@ -27,7 +44,8 @@ const authReducer = (state, action) => {
 
 export const AuthProvider = (props) => {
     const [state, dispatch] = useReducer(authReducer, { user: null });
-    const login = userData => {
+    const login = (userData) => {
+        storeToken(userData.token);
         dispatch({
             type: USER_LOGIN,
             payload: userData

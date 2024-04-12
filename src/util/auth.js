@@ -1,11 +1,8 @@
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const storeToken = async (token) => {
     try {
-        await AsyncStorage.setItem("token", token);
-        console.log('Token Saved!')
-        const token = await getToken()
-        console.log('Token retreived', token)
+        await AsyncStorage.setItem("jwtToken", token);
     } catch (error) {
         console.log(error.message);
     }
@@ -13,11 +10,22 @@ export const storeToken = async (token) => {
 
 export const getToken = async () => {
     try {
-        const value = await AsyncStorage.getItem("token");
+        const token = await AsyncStorage.getItem("jwtToken");
         if (value !== null) {
-            return token
+            return token;
         }
     } catch (error) {
-        console.log(error.message)
+        console.log(error.message);
     }
 };
+
+export const removeToken = async () => {
+    try {
+        await AsyncStorage.removeItem("jwtToken");
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+export const isTokenExpired = (decodedToken) =>
+    decodedToken.exp * 1000 < Date.now();
