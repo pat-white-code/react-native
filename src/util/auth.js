@@ -11,7 +11,7 @@ export const storeToken = async (token) => {
 export const getToken = async () => {
     try {
         const token = await AsyncStorage.getItem("jwtToken");
-        if (value !== null) {
+        if (token !== null) {
             return token;
         }
     } catch (error) {
