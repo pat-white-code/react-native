@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import { TextInput } from "react-native";
+import { gql, useMutation } from "@apollo/client";
 
 const styles = StyleSheet.create({
     container: {
@@ -25,8 +26,31 @@ const styles = StyleSheet.create({
     }
 });
 
+const CREATE_POST = gql`
+    mutation Mutation($createPostInput: CreatePostInput) {
+        createPost(createPostInput: $createPostInput) {
+            body
+            createdAt
+            id
+            username
+        }
+    }
+`;
+
 const CreatePostScreen = () => {
     const [text, setText] = useState("");
+
+    const [createPost, { data, loading, error }] = useMutation(CREATE_POST, {
+        update(_, result) {
+            console.log("createPost", result);
+        },
+        variables: {
+            createPostInput: {
+                body: text
+            }
+        }
+    });
+
     return (
         <View style={styles.container}>
             {/* <Text>hi</Text> */}
@@ -43,9 +67,7 @@ const CreatePostScreen = () => {
                     disabled={!text}
                     // disabled={loading}
                     mode="contained"
-                    onPress={() => {
-                        //create post
-                    }}
+                    onPress={() => createPost()}
                 >
                     Post
                 </Button>

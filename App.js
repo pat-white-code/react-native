@@ -1,6 +1,12 @@
 import React from "react";
 import { AppRegistry } from "react-native";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import {
+    ApolloClient,
+    InMemoryCache,
+    ApolloProvider,
+    createHttpLink
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import config from "./config";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -14,11 +20,26 @@ import { Appbar } from "react-native-paper";
 import { getHeaderTitle } from "@react-navigation/elements";
 import LoginScreen from "./src/Screens/LoginScreen";
 import { AuthProvider } from "./src/context/auth";
+import { getToken } from "./src/util/auth";
+
+const httpLink = createHttpLink({
+    uri: `http://${config.IP_ADDRESS}:4000/graphql`
+});
 
 const Stack = createNativeStackNavigator();
 
+const authLink = setContext(async (_, { headers }) => {
+    const token = await getToken();
+    return {
+        headers: {
+            ...headers,
+            authorization: token ? `Bearer ${token}` : ""
+        }
+    };
+});
+
 const client = new ApolloClient({
-    uri: `http://${config.IP_ADDRESS}:4000/graphql`,
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache()
 });
 
