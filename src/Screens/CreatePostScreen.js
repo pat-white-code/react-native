@@ -3,6 +3,8 @@ import { View, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import { TextInput } from "react-native";
 import { gql, useMutation } from "@apollo/client";
+import { GET_POSTS } from "../queries/get-posts";
+import { CREATE_POST } from "../queries/create-post";
 
 const styles = StyleSheet.create({
     container: {
@@ -26,34 +28,25 @@ const styles = StyleSheet.create({
     }
 });
 
-const CREATE_POST = gql`
-    mutation Mutation($createPostInput: CreatePostInput) {
-        createPost(createPostInput: $createPostInput) {
-            body
-            createdAt
-            id
-            username
-        }
-    }
-`;
-
-const CreatePostScreen = () => {
+const CreatePostScreen = ({ navigation }) => {
     const [text, setText] = useState("");
 
-    const [createPost, { data, loading, error }] = useMutation(CREATE_POST, {
-        update(_, result) {
-            console.log("createPost", result);
-        },
+    const [createPost, { loading, error }] = useMutation(CREATE_POST, {
         variables: {
             createPostInput: {
                 body: text
             }
+        },
+        update(cache, { data: { createPost } }) {
+            cache.updateQuery({ query: GET_POSTS }, data => ({
+                posts: [createPost, ...data.posts]
+            }));
+            navigation.navigate('Home');
         }
     });
 
     return (
         <View style={styles.container}>
-            {/* <Text>hi</Text> */}
             <TextInput
                 style={styles.textInput}
                 placeholder="Share your thoughts..."
@@ -64,8 +57,7 @@ const CreatePostScreen = () => {
             <View style={styles.buttonContainer}>
                 <Button
                     style={styles.submitButton}
-                    disabled={!text}
-                    // disabled={loading}
+                    disabled={!text || loading}
                     mode="contained"
                     onPress={() => createPost()}
                 >

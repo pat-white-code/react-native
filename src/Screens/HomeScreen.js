@@ -3,29 +3,8 @@ import { View, Text, StyleSheet, FlatList } from "react-native";
 import Post from '../components/Post'
 import { AuthContext } from "../context/auth";
 
-import { gql, useQuery } from "@apollo/client";
-
-const GET_POSTS = gql`
-    query Query {
-        posts {
-            id
-            body
-            comments {
-                body
-                createdAt
-                id
-                username
-            }
-            createdAt
-            likes {
-                createdAt
-                id
-                username
-            }
-            username
-        }
-    }
-`;
+import { useQuery } from "@apollo/client";
+import { GET_POSTS } from "../queries/get-posts";
 
 const styles = StyleSheet.create({
     container: {
