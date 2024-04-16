@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import {
     Button,
     Card,
+    Divider,
     Icon,
     IconButton,
     Text,
@@ -34,6 +35,15 @@ const styles = StyleSheet.create({
     rightHeader: {
         display: "flex",
         flexDirection: "row"
+    },
+    bodyContainer: {
+        paddingBottom: 10
+    },
+    actionContainer: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-around",
+        paddingTop: 10
     }
 });
 
@@ -66,7 +76,22 @@ const Post = ({ post }) => {
                     <IconButton onPress={() => {}} icon="delete" size={15} />
                 </View>
             </View>
-            <Text>{body}</Text>
+            <View style={styles.bodyContainer}>
+                <Text>{body}</Text>
+            </View>
+            <Divider />
+            <View style={styles.actionContainer}>
+                <Button
+                    onPress={() => {}}
+                    mode={"contained-tonal"}
+                    icon={"star"}
+                >
+                    Like
+                </Button>
+                <Button mode={"contained-tonal"} icon={"comment"}>
+                    comment
+                </Button>
+            </View>
         </Card>
     );
 };
