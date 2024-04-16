@@ -7,10 +7,12 @@ import {
     Icon,
     IconButton,
     Text,
-    ThemeProvider
 } from "react-native-paper";
 import moment from "moment";
 import { Avatar } from "react-native-paper";
+import { useMutation } from "@apollo/client";
+import { DELETE_POST, GET_POSTS } from "../queries/posts";
+
 
 const styles = StyleSheet.create({
     avatar: {
@@ -48,7 +50,18 @@ const styles = StyleSheet.create({
 });
 
 const Post = ({ post }) => {
-    const { body, username, createdAt } = post.item;
+    const { body, username, createdAt, id } = post.item;
+
+    const [deletePost, { loading, error }] = useMutation(DELETE_POST, {
+        variables: {
+            postId: id
+        },
+        update(cache, { data: { createPost } }) {
+            cache.updateQuery({ query: GET_POSTS }, data => ({
+                posts: data.posts.filter(post => post.id !== id)
+            }));
+        }
+    });
     // const formattedDate = moment(createdAt).fromNow()
 
     return (
@@ -73,7 +86,7 @@ const Post = ({ post }) => {
                         icon="dots-horizontal"
                         size={15}
                     />
-                    <IconButton onPress={() => {}} icon="delete" size={15} />
+                    <IconButton onPress={() => deletePost()} loading={loading} icon="delete" size={15} />
                 </View>
             </View>
             <View style={styles.bodyContainer}>

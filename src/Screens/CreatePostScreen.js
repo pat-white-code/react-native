@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import { TextInput } from "react-native";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { GET_POSTS } from "../queries/get-posts";
 import { CREATE_POST } from "../queries/create-post";
 
