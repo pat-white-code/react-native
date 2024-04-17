@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import {
     Button,
@@ -6,13 +6,13 @@ import {
     Divider,
     Icon,
     IconButton,
-    Text,
+    Text
 } from "react-native-paper";
 import moment from "moment";
 import { Avatar } from "react-native-paper";
 import { useMutation } from "@apollo/client";
 import { DELETE_POST, GET_POSTS } from "../queries/posts";
-
+import { AuthContext } from "../context/auth";
 
 const styles = StyleSheet.create({
     avatar: {
@@ -50,15 +50,19 @@ const styles = StyleSheet.create({
 });
 
 const Post = ({ post }) => {
-    const { body, username, createdAt, id } = post.item;
+    const context = useContext(AuthContext);
+    const userId = context.user?.id;
+
+    const { body, username, createdAt, id, user } = post.item;
+    const isAuthordByYou = user.id === userId;
 
     const [deletePost, { loading, error }] = useMutation(DELETE_POST, {
         variables: {
             postId: id
         },
-        update(cache, { data: { createPost } }) {
-            cache.updateQuery({ query: GET_POSTS }, data => ({
-                posts: data.posts.filter(post => post.id !== id)
+        update(cache) {
+            cache.updateQuery({ query: GET_POSTS }, (data) => ({
+                posts: data.posts.filter((post) => post.id !== id)
             }));
         }
     });
@@ -86,7 +90,14 @@ const Post = ({ post }) => {
                         icon="dots-horizontal"
                         size={15}
                     />
-                    <IconButton onPress={() => deletePost()} loading={loading} icon="delete" size={15} />
+                    {isAuthordByYou && (
+                        <IconButton
+                            onPress={() => deletePost()}
+                            loading={loading}
+                            icon="delete"
+                            size={15}
+                        />
+                    )}
                 </View>
             </View>
             <View style={styles.bodyContainer}>

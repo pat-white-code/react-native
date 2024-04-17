@@ -7,6 +7,9 @@ export const GET_POSTS = gql`
             body
             createdAt
             username
+            user {
+                id
+            }
         }
     }
 `;

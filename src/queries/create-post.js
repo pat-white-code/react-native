@@ -7,6 +7,9 @@ export const CREATE_POST = gql`
             createdAt
             id
             username
+            user {
+                id
+            }
         }
     }
 `;
