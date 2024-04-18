@@ -7,6 +7,11 @@ export const GET_POSTS = gql`
             body
             createdAt
             username
+            user {
+                id
+            }
+            totalLikes
+            isLiked
         }
     }
 `;
@@ -20,10 +25,31 @@ export const DELETE_POST = gql`
 export const CREATE_POST = gql`
     mutation Mutation($createPostInput: CreatePostInput) {
         createPost(createPostInput: $createPostInput) {
+            id
             body
             createdAt
-            id
             username
+            user {
+                id
+            }
+            totalLikes
+            isLiked
+        }
+    }
+`;
+
+export const LIKE_POST = gql`
+    mutation Mutation($postId: ID!) {
+        likePost(postId: $postId) {
+            id
+            body
+            createdAt
+            username
+            user {
+                id
+            }
+            totalLikes
+            isLiked
         }
     }
 `;

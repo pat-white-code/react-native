@@ -4,7 +4,6 @@ import {
     Button,
     Card,
     Divider,
-    Icon,
     IconButton,
     Text
 } from "react-native-paper";
@@ -13,6 +12,8 @@ import { Avatar } from "react-native-paper";
 import { useMutation } from "@apollo/client";
 import { DELETE_POST, GET_POSTS } from "../queries/posts";
 import { AuthContext } from "../context/auth";
+import LikePostButton from "./LikePostButton";
+import { pluralOrSingle } from "../util/strings";
 
 const styles = StyleSheet.create({
     avatar: {
@@ -53,10 +54,11 @@ const Post = ({ post }) => {
     const context = useContext(AuthContext);
     const userId = context.user?.id;
 
-    const { body, username, createdAt, id, user } = post.item;
+    const { body, username, createdAt, id, user, isLiked, totalLikes } =
+        post;
     const isAuthordByYou = user.id === userId;
 
-    const [deletePost, { loading, error }] = useMutation(DELETE_POST, {
+    const [deletePost, { loading }] = useMutation(DELETE_POST, {
         variables: {
             postId: id
         },
@@ -66,7 +68,6 @@ const Post = ({ post }) => {
             }));
         }
     });
-    // const formattedDate = moment(createdAt).fromNow()
 
     return (
         <Card style={styles.container}>
@@ -102,16 +103,13 @@ const Post = ({ post }) => {
             </View>
             <View style={styles.bodyContainer}>
                 <Text>{body}</Text>
+                <Text>
+                    {totalLikes} {pluralOrSingle(totalLikes, 'Like')}
+                </Text>
             </View>
             <Divider />
             <View style={styles.actionContainer}>
-                <Button
-                    onPress={() => {}}
-                    mode={"contained-tonal"}
-                    icon={"star"}
-                >
-                    Like
-                </Button>
+                <LikePostButton postId={id} isLiked={isLiked} />
                 <Button mode={"contained-tonal"} icon={"comment"}>
                     comment
                 </Button>
