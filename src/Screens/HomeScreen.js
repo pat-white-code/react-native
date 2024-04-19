@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
     const { data, errors, loading } = useQuery(GET_POSTS);
 
     if (loading) {
@@ -35,7 +35,7 @@ const HomeScreen = () => {
         <View style={styles.container}>
             <FlatList
                 data={data.posts}
-                renderItem={post => <Post post={post.item} />}
+                renderItem={post => <Post post={post.item} navigation={navigation} />}
                 keyExtractor={post => post.id}
             />
         </View>

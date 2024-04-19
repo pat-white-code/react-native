@@ -1,19 +1,12 @@
 import React, { useContext } from "react";
 import { StyleSheet, View } from "react-native";
-import {
-    Button,
-    Card,
-    Divider,
-    IconButton,
-    Text
-} from "react-native-paper";
+import { Button, Card, Divider, IconButton, Text } from "react-native-paper";
 import moment from "moment";
 import { Avatar } from "react-native-paper";
-import { useMutation } from "@apollo/client";
-import { DELETE_POST, GET_POSTS } from "../queries/posts";
 import { AuthContext } from "../context/auth";
 import LikePostButton from "./LikePostButton";
 import { pluralOrSingle } from "../util/strings";
+import DeletePostButton from "./DeletePostButton";
 
 const styles = StyleSheet.create({
     avatar: {
@@ -50,24 +43,12 @@ const styles = StyleSheet.create({
     }
 });
 
-const Post = ({ post }) => {
+const Post = ({ post, navigation }) => {
     const context = useContext(AuthContext);
     const userId = context.user?.id;
 
-    const { body, username, createdAt, id, user, isLiked, totalLikes } =
-        post;
+    const { body, username, createdAt, id, user, isLiked, totalLikes } = post;
     const isAuthordByYou = user.id === userId;
-
-    const [deletePost, { loading }] = useMutation(DELETE_POST, {
-        variables: {
-            postId: id
-        },
-        update(cache) {
-            cache.updateQuery({ query: GET_POSTS }, (data) => ({
-                posts: data.posts.filter((post) => post.id !== id)
-            }));
-        }
-    });
 
     return (
         <Card style={styles.container}>
@@ -91,29 +72,36 @@ const Post = ({ post }) => {
                         icon="dots-horizontal"
                         size={15}
                     />
-                    {isAuthordByYou && (
-                        <IconButton
-                            onPress={() => deletePost()}
-                            loading={loading}
-                            icon="delete"
-                            size={15}
-                        />
-                    )}
+                    {isAuthordByYou && <DeletePostButton postId={id} />}
                 </View>
             </View>
             <View style={styles.bodyContainer}>
                 <Text>{body}</Text>
                 <Text>
-                    {totalLikes} {pluralOrSingle(totalLikes, 'Like')}
+                    {totalLikes} {pluralOrSingle(totalLikes, "Like")}
                 </Text>
             </View>
             <Divider />
             <View style={styles.actionContainer}>
                 <LikePostButton postId={id} isLiked={isLiked} />
-                <Button mode={"contained-tonal"} icon={"comment"}>
+                <Button
+                    mode={"contained-tonal"}
+                    icon={"comment"}
+                    onPress={() => {
+                        navigation.navigate("CreatePost");
+                    }}
+                >
                     comment
                 </Button>
             </View>
+            {/* {exapanded && (
+                <>
+                    <Divider />
+                    <View>
+                        <Text variant="titleMedium">Comments</Text>
+                    </View>
+                </>
+            )} */}
         </Card>
     );
 };
