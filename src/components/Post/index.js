@@ -3,9 +3,10 @@ import { StyleSheet, View } from "react-native";
 import { Button, Card, Divider, IconButton, Text } from "react-native-paper";
 import moment from "moment";
 import { Avatar } from "react-native-paper";
-import { AuthContext } from "../context/auth";
+
+import { AuthContext } from "../../context/auth";
 import LikePostButton from "./LikePostButton";
-import { pluralOrSingle } from "../util/strings";
+import { pluralOrSingle } from "../../util/strings";
 import DeletePostButton from "./DeletePostButton";
 
 const styles = StyleSheet.create({

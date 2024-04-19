@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import Post from '../components/Post'
+import Post from "../components/Post";
 
 import { useQuery } from "@apollo/client";
 import { GET_POSTS } from "../queries/posts";

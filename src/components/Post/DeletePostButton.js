@@ -1,7 +1,7 @@
 import React from "react";
 import { IconButton } from "react-native-paper";
 import { useMutation } from "@apollo/client";
-import { DELETE_POST, GET_POSTS } from "../queries/posts";
+import { DELETE_POST, GET_POSTS } from "../../queries/posts";
 
 const DeletePostButton = ({ postId }) => {
     const [deletePost, { loading }] = useMutation(DELETE_POST, {

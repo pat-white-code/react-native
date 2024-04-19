@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "react-native-paper";
 import { useMutation } from "@apollo/client";
-import { GET_POSTS, LIKE_POST } from "../queries/posts";
+import { GET_POSTS, LIKE_POST } from "../../queries/posts";
 
 const LikePostButton = ({ postId, isLiked }) => {
     const [likePost, {loading }] = useMutation(LIKE_POST, {
