@@ -12,6 +12,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CreatePostScreen from "./src/Screens/CreatePostScreen";
 import HomeScreen from "./src/Screens/HomeScreen";
+import PostExpandedScreen from './src/Screens/PostExpandedScreen';
 import {
     MD3LightTheme as DefaultTheme,
     PaperProvider
@@ -84,6 +85,11 @@ const App = () => {
                                 name="CreatePost"
                                 component={CreatePostScreen}
                                 options={{ title: "Create Post" }}
+                            />
+                            <Stack.Screen
+                                name="PostExpandedScreen"
+                                component={PostExpandedScreen}
+                                options={{ title: "Post Details" }}
                             />
                         </Stack.Navigator>
                     </NavigationContainer>

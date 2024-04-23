@@ -48,23 +48,6 @@ const LoginScreen = ({ navigation }) => {
         }
     });
 
-    // if (data) {
-    //     await storeToken(data.login.token)
-    //     navigation.navigate(home)
-    // }
-
-    // useEffect(async () => {
-    //     if (data.login.token) {
-    //         debugger
-    //         await storeToken(data.login.token);
-    //         // navigation.navigate('Home')
-    //     }
-    // }, [data]);
-
-    // if (data) {
-    //     console.log("data", data);
-    // }
-
     if (error) {
         console.log("error", error);
     }

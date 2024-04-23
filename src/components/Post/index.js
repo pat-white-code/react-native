@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     }
 });
 
-const Post = ({ post, navigation }) => {
+const Post = ({ post, navigation, expanded }) => {
     const context = useContext(AuthContext);
     const userId = context.user?.id;
 
@@ -82,27 +82,33 @@ const Post = ({ post, navigation }) => {
                     {totalLikes} {pluralOrSingle(totalLikes, "Like")}
                 </Text>
             </View>
-            <Divider />
-            <View style={styles.actionContainer}>
-                <LikePostButton postId={id} isLiked={isLiked} />
-                <Button
-                    mode={"contained-tonal"}
-                    icon={"comment"}
-                    onPress={() => {
-                        navigation.navigate("CreatePost");
-                    }}
-                >
-                    comment
-                </Button>
-            </View>
-            {/* {exapanded && (
+            {!expanded && (
+                <>
+                    <Divider />
+                    <View style={styles.actionContainer}>
+                        <LikePostButton postId={id} isLiked={isLiked} />
+                        <Button
+                            mode={"contained-tonal"}
+                            icon={"comment"}
+                            onPress={() => {
+                                navigation.navigate("PostExpandedScreen", {
+                                    postId: id
+                                });
+                            }}
+                        >
+                            comment
+                        </Button>
+                    </View>
+                </>
+            )}
+            {expanded && (
                 <>
                     <Divider />
                     <View>
                         <Text variant="titleMedium">Comments</Text>
                     </View>
                 </>
-            )} */}
+            )}
         </Card>
     );
 };
