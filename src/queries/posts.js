@@ -2,16 +2,6 @@ import { gql } from "@apollo/client";
 
 export const GET_POST = gql`
     query Posts($postId: ID!) {
-        posts {
-            body
-            isLiked
-            likes {
-                createdAt
-                id
-                userId
-                username
-            }
-        }
         post(postId: $postId) {
             body
             comments {
@@ -20,10 +10,8 @@ export const GET_POST = gql`
                 id
                 user {
                     username
-                    createdAt
                     email
                     id
-                    token
                 }
                 username
             }

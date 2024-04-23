@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import { Button, Card, Divider, IconButton, Text } from "react-native-paper";
 import moment from "moment";
 import { Avatar } from "react-native-paper";
@@ -8,6 +8,7 @@ import { AuthContext } from "../../context/auth";
 import LikePostButton from "./LikePostButton";
 import { pluralOrSingle } from "../../util/strings";
 import DeletePostButton from "./DeletePostButton";
+import PostComment from "../Comment";
 
 const styles = StyleSheet.create({
     avatar: {
@@ -41,6 +42,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         paddingTop: 10
+    },
+    comments: {
+        marginTop: 10
     }
 });
 
@@ -48,7 +52,7 @@ const Post = ({ post, navigation, expanded }) => {
     const context = useContext(AuthContext);
     const userId = context.user?.id;
 
-    const { body, username, createdAt, id, user, isLiked, totalLikes } = post;
+    const { body, username, createdAt, id, user, isLiked, totalLikes, comments } = post;
     const isAuthordByYou = user.id === userId;
 
     return (
@@ -104,8 +108,13 @@ const Post = ({ post, navigation, expanded }) => {
             {expanded && (
                 <>
                     <Divider />
-                    <View>
+                    <View style={styles.comments}>
                         <Text variant="titleMedium">Comments</Text>
+                        <FlatList
+                            data={comments}
+                            renderItem={comment => <PostComment comment={comment.item} />}
+                            keyExtractor={comment => comment.id}
+                        />
                     </View>
                 </>
             )}

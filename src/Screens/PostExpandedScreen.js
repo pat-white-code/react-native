@@ -19,10 +19,6 @@ const PostExpandedScreen = ({ route }) => {
         }
     });
 
-    debugger
-
-    // const post = data.post
-
     if (loading) {
         return (
             <View>
