@@ -1,14 +1,19 @@
-import React, { useContext } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
-import { Button, Card, Divider, IconButton, Text } from "react-native-paper";
+import React, { useContext, useState } from "react";
 import moment from "moment";
-import { Avatar } from "react-native-paper";
 
+// Context
 import { AuthContext } from "../../context/auth";
-import LikePostButton from "./LikePostButton";
-import { pluralOrSingle } from "../../util/strings";
+
+// Components 
+import { FlatList, StyleSheet, View } from "react-native";
+import { Avatar, Button, Card, Divider, IconButton, Text } from "react-native-paper";
 import DeletePostButton from "./DeletePostButton";
+import LikePostButton from "./LikePostButton";
+import CreateCommentInput from "./CreateCommentInput";
 import PostComment from "../Comment";
+
+// Util
+import { pluralOrSingle } from "../../util/strings";
 
 const styles = StyleSheet.create({
     avatar: {
@@ -51,8 +56,18 @@ const styles = StyleSheet.create({
 const Post = ({ post, navigation, expanded }) => {
     const context = useContext(AuthContext);
     const userId = context.user?.id;
+    const [isCommenting, setIsCommenting] = useState(false);
 
-    const { body, username, createdAt, id, user, isLiked, totalLikes, comments } = post;
+    const {
+        body,
+        username,
+        createdAt,
+        id,
+        user,
+        isLiked,
+        totalLikes,
+        comments
+    } = post;
     const isAuthordByYou = user.id === userId;
 
     return (
@@ -112,9 +127,18 @@ const Post = ({ post, navigation, expanded }) => {
                         <Text variant="titleMedium">Comments</Text>
                         <FlatList
                             data={comments}
-                            renderItem={comment => <PostComment comment={comment.item} />}
-                            keyExtractor={comment => comment.id}
+                            renderItem={(comment) => (
+                                <PostComment comment={comment.item} />
+                            )}
+                            keyExtractor={(comment) => comment.id}
                         />
+                        {isCommenting ? (
+                            <CreateCommentInput setIsCommenting={setIsCommenting} />
+                        ) : (
+                            <Button onPress={() => setIsCommenting(true)}>
+                                Comment
+                            </Button>
+                        )}
                     </View>
                 </>
             )}
