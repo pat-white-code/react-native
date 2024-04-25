@@ -1,5 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
+
+import { ActivityIndicator } from 'react-native-paper';
 import Post from "../components/Post";
 
 import { useQuery } from "@apollo/client";
@@ -10,6 +12,12 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10
     },
+    loadingContainer: {
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
 });
 
 const HomeScreen = ({ navigation }) => {
@@ -17,8 +25,8 @@ const HomeScreen = ({ navigation }) => {
 
     if (loading) {
         return (
-            <View>
-                <Text>Loading...</Text>
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" />
             </View>
         );
     }

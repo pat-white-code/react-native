@@ -4,9 +4,16 @@ import moment from "moment";
 // Context
 import { AuthContext } from "../../context/auth";
 
-// Components 
-import { FlatList, StyleSheet, View } from "react-native";
-import { Avatar, Button, Card, Divider, IconButton, Text } from "react-native-paper";
+// Components
+import { FlatList, ScrollView, StyleSheet, View } from "react-native";
+import {
+    Avatar,
+    Button,
+    Card,
+    Divider,
+    IconButton,
+    Text
+} from "react-native-paper";
 import DeletePostButton from "./DeletePostButton";
 import LikePostButton from "./LikePostButton";
 import CreateCommentInput from "./CreateCommentInput";
@@ -20,9 +27,11 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     container: {
+        display: "flex",
         padding: 10,
         margin: 4,
-        borderRadius: 5
+        borderRadius: 5,
+        flex: 1
     },
     header: {
         display: "flex",
@@ -50,7 +59,8 @@ const styles = StyleSheet.create({
     },
     comments: {
         marginTop: 10
-    }
+    },
+    expanded: {}
 });
 
 const Post = ({ post, navigation, expanded }) => {
@@ -121,7 +131,7 @@ const Post = ({ post, navigation, expanded }) => {
                 </>
             )}
             {expanded && (
-                <>
+                <View style={styles.expanded}>
                     <Divider />
                     <View style={styles.comments}>
                         <Text variant="titleMedium">Comments</Text>
@@ -133,14 +143,17 @@ const Post = ({ post, navigation, expanded }) => {
                             keyExtractor={(comment) => comment.id}
                         />
                         {isCommenting ? (
-                            <CreateCommentInput setIsCommenting={setIsCommenting} />
+                            <CreateCommentInput
+                                postId={id}
+                                setIsCommenting={setIsCommenting}
+                            />
                         ) : (
                             <Button onPress={() => setIsCommenting(true)}>
                                 Comment
                             </Button>
                         )}
                     </View>
-                </>
+                </View>
             )}
         </Card>
     );

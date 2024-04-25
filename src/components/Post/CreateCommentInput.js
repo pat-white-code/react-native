@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useMutation } from "@apollo/client";
 
 // Components
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { Avatar } from "react-native-paper";
+import { CREATE_POST_COMMENT } from "../../queries/posts";
 
 const styles = StyleSheet.create({
     container: {
@@ -13,7 +15,6 @@ const styles = StyleSheet.create({
     },
     avatar: {
         borderWidth: 1,
-        // padding: 20,
         marginRight: 12
     },
     input: {
@@ -27,11 +28,31 @@ const styles = StyleSheet.create({
     }
 });
 
-const CreateCommentInput = ({ setIsCommenting }) => {
+const CreateCommentInput = ({ setIsCommenting, postId }) => {
     const [body, setBody] = useState("");
+    const [createComment, { loading }] = useMutation(
+        CREATE_POST_COMMENT,
+        {
+            variables: {
+                createCommentInput: {
+                    body,
+                    postId
+                }
+            },
+            update(_, { data: { createComment } }) {
+                console.log("createComment", createComment);
+                setBody('');
+                setIsCommenting(false);
+            }
+        }
+    );
 
     const handleCancel = () => {
         setIsCommenting(false);
+    };
+
+    const handleCreateComment = () => {
+        createComment();
     };
 
     return (
@@ -46,8 +67,16 @@ const CreateCommentInput = ({ setIsCommenting }) => {
                 />
             </View>
             <View style={styles.actionsContainer}>
-                <Button disabled={!body}>Post</Button>
-                <Button onPress={handleCancel}>Cancel</Button>
+                <Button
+                    loading={loading}
+                    disabled={!body}
+                    onPress={handleCreateComment}
+                >
+                    Post
+                </Button>
+                <Button disabled={loading} onPress={handleCancel}>
+                    Cancel
+                </Button>
             </View>
         </View>
     );

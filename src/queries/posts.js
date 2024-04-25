@@ -92,3 +92,42 @@ export const LIKE_POST = gql`
         }
     }
 `;
+
+export const CREATE_POST_COMMENT = gql`
+    mutation Mutation($createCommentInput: CreateCommentInput) {
+        createComment(createCommentInput: $createCommentInput) {
+            body
+            comments {
+                body
+                createdAt
+                id
+                user {
+                    username
+                    email
+                    id
+                }
+                username
+            }
+            createdAt
+            id
+            isLiked
+            likes {
+                createdAt
+                id
+                userId
+                username
+            }
+            totalComments
+            totalLikes
+            user {
+                createdAt
+                email
+                id
+                token
+                username
+            }
+            userId
+            username
+        }
+    }
+`;
