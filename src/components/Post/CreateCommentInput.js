@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useMutation } from "@apollo/client";
 
 // Components
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { Avatar } from "react-native-paper";
 import { CREATE_POST_COMMENT } from "../../queries/posts";
@@ -30,22 +30,19 @@ const styles = StyleSheet.create({
 
 const CreateCommentInput = ({ setIsCommenting, postId }) => {
     const [body, setBody] = useState("");
-    const [createComment, { loading }] = useMutation(
-        CREATE_POST_COMMENT,
-        {
-            variables: {
-                createCommentInput: {
-                    body,
-                    postId
-                }
-            },
-            update(_, { data: { createComment } }) {
-                console.log("createComment", createComment);
-                setBody('');
-                setIsCommenting(false);
+    const [createComment, { loading }] = useMutation(CREATE_POST_COMMENT, {
+        variables: {
+            createCommentInput: {
+                body,
+                postId
             }
+        },
+        update(_, { data: { createComment } }) {
+            console.log("createComment", createComment);
+            setBody("");
+            setIsCommenting(false);
         }
-    );
+    });
 
     const handleCancel = () => {
         setIsCommenting(false);
@@ -68,6 +65,7 @@ const CreateCommentInput = ({ setIsCommenting, postId }) => {
             </View>
             <View style={styles.actionsContainer}>
                 <Button
+                    mode="contained"
                     loading={loading}
                     disabled={!body}
                     onPress={handleCreateComment}

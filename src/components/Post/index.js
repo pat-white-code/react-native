@@ -135,13 +135,13 @@ const Post = ({ post, navigation, expanded }) => {
                     <Divider />
                     <View style={styles.comments}>
                         <Text variant="titleMedium">Comments</Text>
-                        <FlatList
-                            data={comments}
-                            renderItem={(comment) => (
-                                <PostComment comment={comment.item} />
-                            )}
-                            keyExtractor={(comment) => comment.id}
-                        />
+                        {comments &&
+                            comments.map((comment) => (
+                                <PostComment
+                                    key={comment.id}
+                                    comment={comment}
+                                />
+                            ))}
                         {isCommenting ? (
                             <CreateCommentInput
                                 postId={id}
