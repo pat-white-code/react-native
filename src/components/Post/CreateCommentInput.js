@@ -38,7 +38,6 @@ const CreateCommentInput = ({ setIsCommenting, postId }) => {
             }
         },
         update(_, { data: { createComment } }) {
-            console.log("createComment", createComment);
             setBody("");
             setIsCommenting(false);
         }

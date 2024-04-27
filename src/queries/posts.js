@@ -131,3 +131,37 @@ export const CREATE_POST_COMMENT = gql`
         }
     }
 `;
+
+export const DELETE_POST_COMMENT = gql`
+    mutation Mutation($commentId: ID!, $postId: ID!) {
+        deleteComment(commentId: $commentId, postId: $postId) {
+            id
+            body
+            createdAt
+            username
+            comments {
+                id
+                body
+                username
+                createdAt
+            }
+            likes {
+                id
+                username
+                createdAt
+                userId
+            }
+            user {
+                id
+                email
+                token
+                username
+                createdAt
+            }
+            userId
+            totalLikes
+            isLiked
+            totalComments
+        }
+    }
+`;

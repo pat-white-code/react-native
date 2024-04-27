@@ -140,6 +140,7 @@ const Post = ({ post, navigation, expanded }) => {
                                 <PostComment
                                     key={comment.id}
                                     comment={comment}
+                                    postId={id}
                                 />
                             ))}
                         {isCommenting ? (

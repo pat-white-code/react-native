@@ -5,6 +5,7 @@ import moment from "moment";
 import { Avatar } from "react-native-paper";
 
 import { AuthContext } from "../../context/auth";
+import DeleteCommentButton from "./DeleteCommentButton";
 
 const styles = StyleSheet.create({
     avatar: {
@@ -13,31 +14,29 @@ const styles = StyleSheet.create({
     container: {
         padding: 10,
         margin: 4,
-        // borderRadius: 5,
-        display: 'flex',
-        flexDirection: 'row'
-    },
-    contentContainer: {
-        backgroundColor: 'rgb(224,224,224)',
-        flex: 1,
-        padding: 10,
-        borderRadius: 10,
-        borderTopLeftRadius: 0,
-    },
-    header: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 5,
-    },
-    leftHeader: {
-    },
-    rightHeader: {
         display: "flex",
         flexDirection: "row"
     },
-    bodyContainer: {
+    contentContainer: {
+        backgroundColor: "rgb(224,224,224)",
+        flex: 1,
+        padding: 10,
+        borderRadius: 10,
+        borderTopLeftRadius: 0
     },
+    header: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    leftHeader: {},
+    rightHeader: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: 'baseline',
+        justifyContent: 'center'
+    },
+    bodyContainer: {},
     actionContainer: {
         display: "flex",
         flexDirection: "row",
@@ -46,12 +45,12 @@ const styles = StyleSheet.create({
     }
 });
 
-const PostComment = ({ comment }) => {
+const PostComment = ({ comment, postId }) => {
     const context = useContext(AuthContext);
     const userId = context.user?.id;
 
-    const { body, username, createdAt, user } = comment;
-    // const isAuthordByYou = user.id === userId;
+    const { body, username, createdAt, user, id } = comment;
+    const isAuthordByYou = user.id === userId;
 
     return (
         <View style={styles.container}>
@@ -65,8 +64,15 @@ const PostComment = ({ comment }) => {
                     </View>
                     <View style={styles.rightHeader}>
                         {/* CREATED AT */}
-                        <Text variant="bodySmall">{moment(createdAt).fromNow()}</Text>
-                        {/* ACTIONS BUTTON */}
+                        <Text variant="bodySmall">
+                            {moment(createdAt).fromNow()}
+                        </Text>
+                        {isAuthordByYou && (
+                            <DeleteCommentButton
+                                commentId={id}
+                                postId={postId}
+                            />
+                        )}
                     </View>
                 </View>
                 <View style={styles.bodyContainer}>
