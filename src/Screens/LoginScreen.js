@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
 
 const LoginScreen = ({ navigation }) => {
     const context = useContext(AuthContext);
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("username");
+    const [password, setPassword] = useState("password");
 
     const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER, {
         update(_, result) {

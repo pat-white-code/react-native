@@ -33,8 +33,6 @@ const styles = StyleSheet.create({
     rightHeader: {
         display: "flex",
         flexDirection: "row",
-        alignItems: 'baseline',
-        justifyContent: 'center'
     },
     bodyContainer: {},
     actionContainer: {
@@ -60,10 +58,9 @@ const PostComment = ({ comment, postId }) => {
             <View style={styles.contentContainer}>
                 <View style={styles.header}>
                     <View style={styles.leftHeader}>
-                        <Text variant="titleMedium">{username}</Text>
+                        <Text style={{ marginTop: -4 }} variant='titleMedium'>{username}</Text>
                     </View>
                     <View style={styles.rightHeader}>
-                        {/* CREATED AT */}
                         <Text variant="bodySmall">
                             {moment(createdAt).fromNow()}
                         </Text>
